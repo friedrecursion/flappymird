@@ -5,6 +5,7 @@ let birdheight = 380;
 let birdspeed = 0;
 let score = 0;
 let highScore = 0; // Initialize high score
+let firstRound = true; // Flag to check if it's the first round
 
 const polewidth = 25;
 const poleGap = birdsize * 4;
@@ -49,6 +50,7 @@ function draw() {
     // Check if bird hits the top or ground
     if (birdY - birdsize / 2 < 0 || birdY + birdsize / 2 > height - 20) {
       gameOver = true;
+      firstRound = true; // Set to false to avoid fetching high score again
     }
 
     // Update poles
@@ -90,8 +92,14 @@ function draw() {
     if (poles[poles.length - 1][0] < width - poledistance) {
       poles.push([width, randomPoleY()]);
     }
+
   } else {
     // Update high score if needed
+    if (firstRound) {
+      fetchHighScore();
+      firstRound = false;
+      console.log("Fetching high score");
+    }
     highScore = getHighScore();
     // console.log("High Score: " + highScore);
     // console.log("Current Score: " + score);
