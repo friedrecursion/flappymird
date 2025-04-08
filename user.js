@@ -134,13 +134,11 @@ function displayUser(username) {
     if (snapshot.exists()) {
       const user = snapshot.val();
       userContainer.innerHTML = `
-        <h2>Hello, ${user.name}!</h2>
-        <p>Your score is: ${user.score}</p>
-        <button onclick="logout()">Logout</button>
-        <h3>Leaderboard</h3>
-        <div id="leaderboard"></div>
+      <h3>Leaderboard</h3>
+      <div id="leaderboard"></div>
+      <button onclick="logout()">Logout</button>
       `;
-      displayLeaderboard(); // Show the leaderboard after user logs in
+      displayLeaderboard(user.name); // Show the leaderboard after user logs in
     } else {
       userContainer.innerHTML = "<p>User data not found.</p>";
     }
@@ -150,28 +148,32 @@ function displayUser(username) {
 }
 
 // Display leaderboard with all users' scores
-function displayLeaderboard() {
-  const leaderboardRef = ref(database, 'users');
-  get(leaderboardRef).then((snapshot) => {
-    const leaderboardContainer = document.getElementById("leaderboard");
-    leaderboardContainer.innerHTML = ""; // Clear the current leaderboard
+function displayLeaderboard(currentUser) {
+    const leaderboardRef = ref(database, 'users');
+    get(leaderboardRef).then((snapshot) => {
+      const leaderboardContainer = document.getElementById("leaderboard");
+      leaderboardContainer.innerHTML = ""; // Clear the current leaderboard
 
-    if (snapshot.exists()) {
-      const users = snapshot.val();
-      const sortedUsers = Object.values(users).sort((a, b) => b.score - a.score); // Sort by score
-      sortedUsers.forEach(user => {
-        const userElement = document.createElement("p");
-        userElement.classList.add("leaderboard-entry");
-        userElement.textContent = `${user.name}: ${user.score}`;
-        leaderboardContainer.appendChild(userElement);
-      });
-    } else {
-      leaderboardContainer.innerHTML = "<p>No users found.</p>";
-    }
-  }).catch((error) => {
-    console.error("Error retrieving leaderboard data:", error);
-  });
-}
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+        const sortedUsers = Object.values(users).sort((a, b) => b.score - a.score); // Sort by score
+        sortedUsers.forEach(user => {
+          const userElement = document.createElement("p");
+          userElement.classList.add("leaderboard-entry");
+          
+          // Check if the user is the current logged-in user and append "(you)"
+          const displayName = user.name === currentUser ? `${user.name} (you)` : user.name;
+          userElement.textContent = `${displayName}: ${user.score}`;
+          
+          leaderboardContainer.appendChild(userElement);
+        });
+      } else {
+        leaderboardContainer.innerHTML = "<p>No users found.</p>";
+      }
+    }).catch((error) => {
+      console.error("Error retrieving leaderboard data:", error);
+    });
+  }
 
 // Logout the current user
 function logout() {

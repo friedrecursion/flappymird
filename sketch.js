@@ -20,6 +20,8 @@ let gameOver = false;
 function setup() {
   let cnv = createCanvas(width, height);
   cnv.mousePressed(flap);
+  // Append the canvas directly to the body or a container div
+  document.body.insertBefore(cnv.elt, document.getElementById('user-container'));
   highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0; // Load high score from localStorage
   resetGame();
 }
@@ -89,9 +91,8 @@ function draw() {
     }
   } else {
     // Update high score if needed
-    if (score > highScore) {
+    if (true) {
       highScore = score;
-      localStorage.setItem('highScore', highScore); // Save new high score
     }
 
     // Game over screen
@@ -127,6 +128,21 @@ function flap() {
     resetGame();
   }
 }
+
+// Function to update user's score in Firebase
+function updateHighScoreInFirebase(username, newHighScore) {
+  const userRef = ref(database, 'users/' + username);
+  set(userRef, {
+    name: username,
+    password: '',  // Keep the existing password (you can ignore this field since you're not updating it here)
+    score: newHighScore // Update the score
+  }).then(() => {
+    console.log("High score updated in Firebase");
+  }).catch((error) => {
+    console.error("Error updating high score:", error);
+  });
+}
+
 
 function resetGame() {
   birdheight = 200;
