@@ -190,3 +190,75 @@ window.onload = function () {
 window.showLogin = showLogin;
 window.showRegister = showRegister;
 window.logout = logout;
+
+// user.js (Module)
+export function updateHighScore(newScore) { 
+    const username = localStorage.getItem('username');
+    if (username) {
+        const userRef = ref(database, 'users/' + username);
+        
+        // Update the score only if the new score is higher than the current score
+        get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            const user = snapshot.val();
+            if (newScore > user.score) {
+            // Update the score in the database
+            set(userRef, {
+                ...user,
+                score: newScore
+            }).then(() => {
+                console.log("User's high score updated:", newScore);
+                updateLeaderboard(); // Update the leaderboard after updating the score
+            }).catch((error) => {
+                console.error("Error updating high score:", error);
+                alert("Error updating high score: " + error.message);
+            });
+            } else {
+            console.log("New score is not higher than current score.");
+            }
+        } else {
+            console.log("User data not found.");
+        }
+        }).catch((error) => {
+        console.error("Error retrieving user data:", error);
+        });
+    } else {
+        console.log("No user logged in.");
+    }
+}
+  
+// Make the function globally available
+window.updateHighScore = updateHighScore;
+  
+// Refresh the leaderboard to show updated scores
+function updateLeaderboard() {
+    const leaderboardRef = ref(database, 'users');
+    get(leaderboardRef).then((snapshot) => {
+    const leaderboardContainer = document.getElementById("leaderboard");
+    leaderboardContainer.innerHTML = ""; // Clear the current leaderboard
+
+    if (snapshot.exists()) {
+    const users = snapshot.val();
+    const sortedUsers = Object.values(users).sort((a, b) => b.score - a.score); // Sort by score
+    sortedUsers.forEach(user => {
+        const userElement = document.createElement("p");
+        userElement.classList.add("leaderboard-entry");
+        
+        // Check if the user is the current logged-in user and append "(you)"
+        const displayName = user.name === localStorage.getItem('username') ? `${user.name} (you)` : user.name;
+        userElement.textContent = `${displayName}: ${user.score}`;
+        
+        leaderboardContainer.appendChild(userElement);
+    });
+    } else {
+    leaderboardContainer.innerHTML = "<p>No users found.</p>";
+    }
+}).catch((error) => {
+    console.error("Error retrieving leaderboard data:", error);
+});
+}
+
+// Make the leaderboard update function globally available
+window.updateLeaderboard = updateLeaderboard;
+
+  

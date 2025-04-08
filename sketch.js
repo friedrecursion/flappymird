@@ -91,8 +91,9 @@ function draw() {
     }
   } else {
     // Update high score if needed
-    if (true) {
+    if (score > highScore) {
       highScore = score;
+      updateHighScore(highScore);
     }
 
     // Game over screen
