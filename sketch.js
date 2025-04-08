@@ -119,6 +119,16 @@ function keyPressed() {
   }
 }
 
+// Handle mobile screen taps
+function touchStarted() {
+  if (!gameOver) {
+    birdspeed = -gravity * 18;
+  } else {
+    resetGame();
+  }
+  return false; // Prevent default action (e.g., scrolling)
+}
+
 function resetGame() {
   birdheight = 200;
   birdspeed = 0;
