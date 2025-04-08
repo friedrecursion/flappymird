@@ -16,6 +16,7 @@ const height = 400;
 
 let poles = [];
 let gameOver = false;
+let gameStarted = false; // New flag to track game state
 
 function setup() {
   createCanvas(width, height);
@@ -101,7 +102,7 @@ function draw() {
     textSize(20);
     text("Score: " + score, width / 2, height / 2);
     text("High Score: " + highScore, width / 2, height / 2 + 30);
-    text("Press any key to restart", width / 2, height / 2 + 60);
+    text("Press any key or tap to restart", width / 2, height / 2 + 60);
   }
 
   // Draw score
@@ -120,16 +121,21 @@ function keyPressed() {
 }
 
 // Handle mobile screen taps
-// function touchStarted() {
-//   if (!gameOver) {
-//     birdspeed = -gravity * 18;
-//     return false; // Prevents zooming and scrolling during the jump
-//   } else {
-//     resetGame();
-//     return true; // Allow default behavior when game is over, allowing zoom and other touch actions
-//   }
-// }
+function touchStarted() {
+  if (!gameStarted) {
+    gameStarted = true;  // Start the game
+    resetGame();         // Initialize the game
+    return false;        // Prevent default behavior on the first tap (prevents scrolling and zoom)
+  }
 
+  if (!gameOver) {
+    birdspeed = -gravity * 18; // Make the bird jump
+    return false; // Prevent zoom/scroll when jumping
+  } else {
+    resetGame(); // Restart the game after it's over
+    return true;  // Allow zooming and scrolling when the game is over
+  }
+}
 
 function resetGame() {
   birdheight = 200;
@@ -137,6 +143,7 @@ function resetGame() {
   score = 0;
   poles = [];
   gameOver = false;
+  gameStarted = false;  // Reset the gameStarted flag for next game start
 
   let x = 300;
   while (x < width + polewidth) {
