@@ -7,12 +7,22 @@
     <title>Sketch</title>
 
     <link rel="stylesheet" type="text/css" href="style.css">
-
+    
     <script src="libraries/p5.min.js"></script>
     <script src="libraries/p5.sound.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js"></script>
   </head>
 
   <body>
-    <script src="sketch.js"></script>
+    <!-- <script src="sketch.js"></script> -->
+    <div id="user-container"></div>
+
+    <!-- Import user.js (JavaScript file) -->
+    <script type="module" src="user.js"></script>
+  
+    
   </body>
 </html>

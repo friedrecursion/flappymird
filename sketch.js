@@ -19,7 +19,7 @@ let gameOver = false;
 
 function setup() {
   let cnv = createCanvas(width, height);
-  cnv.mousePressed(flap)
+  cnv.mousePressed(flap);
   highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0; // Load high score from localStorage
   resetGame();
 }
