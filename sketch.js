@@ -123,11 +123,13 @@ function keyPressed() {
 function touchStarted() {
   if (!gameOver) {
     birdspeed = -gravity * 18;
+    return false; // Prevents zooming and scrolling during the jump
   } else {
     resetGame();
+    return true; // Allow default behavior when game is over, allowing zoom and other touch actions
   }
-  return false; // Prevent default action (e.g., scrolling)
 }
+
 
 function resetGame() {
   birdheight = 200;
