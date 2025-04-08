@@ -22,6 +22,8 @@ function setup() {
   cnv.mousePressed(flap);
   // Append the canvas directly to the body or a container div
   document.body.insertBefore(cnv.elt, document.getElementById('user-container'));
+  fetchHighScore();
+  highScore = getHighScore();
   resetGame();
 }
 
@@ -90,8 +92,12 @@ function draw() {
     }
   } else {
     // Update high score if needed
+    highScore = getHighScore();
+    // console.log("High Score: " + highScore);
+    // console.log("Current Score: " + score);
     if (score > highScore) {
       highScore = score;
+      setHighScore(highScore);
       updateHighScore(highScore);
     }
 

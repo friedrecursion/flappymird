@@ -20,6 +20,8 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const database = getDatabase(app);
 
+let userHighScore = 0; // Variable to store the user's high score
+
 // Check if a user is already logged in by checking localStorage
 function checkForLoggedInUser() {
   const username = localStorage.getItem('username');
@@ -89,6 +91,7 @@ get(userRef).then((snapshot) => {
 // Register a new user with a username and password (plain text)
 function registerUser(username, password) {
   const userRef = ref(database, 'users/' + username);
+  userHighScore = 0; // Reset high score for new user
   set(userRef, {
     name: username,
     password: password,  // Plaintext password (not secure)
@@ -111,6 +114,7 @@ function loginUser(username, password) {
       const user = snapshot.val();
       if (user.password === password) {
         // Password matches
+        userHighScore = user.score; // Set the user's high score
         console.log("User logged in:", username);
         localStorage.setItem('username', username); // Save username in localStorage for session persistence
         displayUser(username); // Show user after login
@@ -178,6 +182,7 @@ function displayLeaderboard(currentUser) {
 // Logout the current user
 function logout() {
   localStorage.removeItem('username');
+  userHighScore = 0; // Reset high score on logout
   checkForLoggedInUser(); // Recheck if user is logged in after logout
 }
 
@@ -190,6 +195,39 @@ window.onload = function () {
 window.showLogin = showLogin;
 window.showRegister = showRegister;
 window.logout = logout;
+
+function getHighScore() {
+    return userHighScore
+}
+
+function setHighScore(newHighScore) {
+    userHighScore = newHighScore; // Update the high score variable 
+}
+
+function fetchHighScore() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        const userRef = ref(database, 'users/' + username);
+        get(userRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const user = snapshot.val();
+                userHighScore = user.score; // Set the user's high score
+                console.log("Fetched high score:", userHighScore);
+            } else {
+                console.log("User data not found.");
+            }
+        }).catch((error) => {
+            console.error("Error fetching high score:", error);
+        });
+    } else {
+        console.log("No user logged in.");
+        highScore = 0; // Reset high score if no user is logged in
+    }
+}
+
+window.getHighScore = getHighScore;
+window.setHighScore = setHighScore;
+window.fetchHighScore = fetchHighScore;
 
 // user.js (Module)
 export function updateHighScore(newScore) { 
@@ -214,7 +252,7 @@ export function updateHighScore(newScore) {
                 alert("Error updating high score: " + error.message);
             });
             } else {
-            console.log("New score is not higher than current score.");
+            console.log("New scores is not higher than current score.");
             }
         } else {
             console.log("User data not found.");
