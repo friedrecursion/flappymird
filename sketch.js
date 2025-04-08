@@ -120,15 +120,15 @@ function keyPressed() {
 }
 
 // Handle mobile screen taps
-function touchStarted() {
-  if (!gameOver) {
-    birdspeed = -gravity * 18;
-    return false; // Prevents zooming and scrolling during the jump
-  } else {
-    resetGame();
-    return true; // Allow default behavior when game is over, allowing zoom and other touch actions
-  }
-}
+// function touchStarted() {
+//   if (!gameOver) {
+//     birdspeed = -gravity * 18;
+//     return false; // Prevents zooming and scrolling during the jump
+//   } else {
+//     resetGame();
+//     return true; // Allow default behavior when game is over, allowing zoom and other touch actions
+//   }
+// }
 
 
 function resetGame() {
