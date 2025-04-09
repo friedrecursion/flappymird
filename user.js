@@ -144,7 +144,7 @@ function displayUser(username) {
       `;
       displayLeaderboard(user.name); // Show the leaderboard after user logs in
     } else {
-      userContainer.innerHTML = "<p>User data not found.</p>";
+        displayLoginOrRegister();
     }
   }).catch((error) => {
     console.error("Error retrieving user data:", error);
