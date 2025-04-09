@@ -1,4 +1,4 @@
-const gravity = 0.22;
+const gravity = 0.17;
 const polespeed = 1.36;
 let birdsize = 24;
 const birdstartHeight = 300;
@@ -9,7 +9,7 @@ let highScore = 0;
 let firstRound = true;
 
 const polewidth = 25;
-const poleGap = birdsize * 4.35;
+const poleGap = birdsize * 4.6;
 const poledistance = 140;
 const poleoverhang = 5;
 
@@ -117,7 +117,7 @@ function keyPressed() {
 
 function flap() {
   if (!gameOver) {
-    birdspeed = -gravity * 18;
+    birdspeed = -gravity * 26;
   } else if (gameOver) {
     resetGame();
   }
