@@ -43,9 +43,9 @@ function displayLoginOrRegister() {
 
 // Show login form
 function showLogin() {
-  const username = prompt("Please enter your username:");
+  const username = prompt("Please enter your username:").trim();
   if (username) {
-    const password = prompt("Please enter your password:");
+    const password = prompt("Please enter your password:").trim();
     if (password) {
       loginUser(username, password); // Attempt to log in
     } else {
@@ -58,7 +58,7 @@ function showLogin() {
 
 // Show register form
 function showRegister() {
-    const username = prompt("Please enter your desired username:");
+    const username = prompt("Please enter your desired username:").trim();
     if (username) {
         checkIfUsernameExists(username); // Check if username exists before registration
     } else {
@@ -75,7 +75,7 @@ get(userRef).then((snapshot) => {
     alert("Username already exists! Please choose a different username.");
     } else {
     // If username does not exist, proceed with password prompt
-    const password = prompt("Please enter your password:");
+    const password = prompt("Please enter your password:").trim();
     if (password) {
         registerUser(username, password); // Proceed with registration if password is provided
     } else {
@@ -90,6 +90,7 @@ get(userRef).then((snapshot) => {
   
 // Register a new user with a username and password (plain text)
 function registerUser(username, password) {
+
   const userRef = ref(database, 'users/' + username);
   userHighScore = 0; // Reset high score for new user
   set(userRef, {
