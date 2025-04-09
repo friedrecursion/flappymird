@@ -12,13 +12,14 @@ const poleGap = birdsize * 4.2;
 const poledistance = 120;
 const poleoverhang = 5; // Overhang for the poles
 
-const width = 600;
+let width = 600;
 const height = 400;
 
 let poles = [];
 let gameOver = false;
 
 function setup() {
+  width = windowWidth-20;
   let cnv = createCanvas(width, height);
   cnv.mousePressed(flap);
   // Append the canvas directly to the body or a container div

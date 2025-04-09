@@ -20,6 +20,15 @@
   <script type="module" src="user.js"></script>
   <script src="sketch.js"></script>
   <div id="user-container"></div>
+  <script>
+    window.addEventListener('keydown', function(e) {
+      // Space key (keyCode 32) and no input field focused
+      if (e.code === 'Space' && document.activeElement === document.body) {
+        e.preventDefault();
+      }
+    });
+  </script>
+  
 </body>
 
 </html>
