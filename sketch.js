@@ -1,17 +1,17 @@
 const gravity = 0.22;
 const polespeed = 1.36;
 let birdsize = 24;
-const birdstartHeight = 300; // Starting height of the bird
-let birdheight = birdstartHeight; // Current height of the bird
+const birdstartHeight = 300;
+let birdheight = birdstartHeight;
 let birdspeed = 0;
 let score = 0;
-let highScore = 0; // Initialize high score
-let firstRound = true; // Flag to check if it's the first round
+let highScore = 0;
+let firstRound = true;
 
 const polewidth = 25;
 const poleGap = birdsize * 4.35;
 const poledistance = 140;
-const poleoverhang = 5; // Overhang for the poles
+const poleoverhang = 5;
 
 let width = 600;
 const height = 400;
@@ -20,10 +20,9 @@ let poles = [];
 let gameOver = false;
 
 function setup() {
-  width = windowWidth < 500 ? windowWidth - 20 :  500 - 20;
+  width = windowWidth < 500 ? windowWidth - 20 : 500 - 20;
   let cnv = createCanvas(width, height);
   cnv.mousePressed(flap);
-  // Append the canvas directly to the body or a container div
   document.body.insertBefore(cnv.elt, document.getElementById('user-container'));
   fetchHighScore();
   highScore = getHighScore();
@@ -31,9 +30,8 @@ function setup() {
 }
 
 function draw() {
-  background(100, 180, 255); // blue background
+  background(100, 180, 255);
 
-  // Draw green ground
   fill(50, 200, 50);
   rect(0, height - 20, width, 20);
 
@@ -41,43 +39,34 @@ function draw() {
   let birdY = height - birdheight;
 
   if (!gameOver) {
-    // Draw bird before poles
-    fill(255, 255, 0); // yellow bird
+    fill(255, 255, 0);
     circle(birdX, birdY, birdsize);
 
-    // Update bird position
     birdheight -= birdspeed;
     birdspeed += gravity;
 
-    // Check if bird hits the top or ground
     if (birdY - birdsize / 2 < 0 || birdY + birdsize / 2 > height - 20) {
-      gameOver = true;
-      firstRound = true; // Set to false to avoid fetching high score again
+      handleGameOver();
     }
 
-    // Update poles
     for (let i = 0; i < poles.length; i++) {
       let [x, holeY] = poles[i];
 
-      fill(0, 200, 0); // green poles
+      fill(0, 200, 0);
       rect(x, 0, polewidth, holeY - poleGap / 2);
       rect(x, holeY + poleGap / 2, polewidth, height - holeY - poleGap / 2 - 20);
 
-      // draw tube ends
-      rect(x - poleoverhang, holeY - poleGap / 2, polewidth + poleoverhang * 2, poleoverhang*3);
-      rect(x - poleoverhang, holeY + poleGap / 2, polewidth + poleoverhang * 2, poleoverhang*3);
+      rect(x - poleoverhang, holeY - poleGap / 2, polewidth + poleoverhang * 2, poleoverhang * 3);
+      rect(x - poleoverhang, holeY + poleGap / 2, polewidth + poleoverhang * 2, poleoverhang * 3);
 
-      // Collision detection (based on birdY)
       if (
         birdX + birdsize / 2 > x &&
         birdX - birdsize / 2 < x + polewidth &&
-        (birdY - birdsize  < holeY - poleGap / 2 || birdY + birdsize / 2  > holeY + poleGap / 2)
+        (birdY - birdsize < holeY - poleGap / 2 || birdY + birdsize / 2 > holeY + poleGap / 2)
       ) {
-        gameOver = true;
-        firstRound = true; // Set to false to avoid fetching high score again
+        handleGameOver();
       }
 
-      // Scoring
       if (!poles[i].passed && x + polewidth < birdX - birdsize / 2) {
         score++;
         poles[i].passed = true;
@@ -86,33 +75,22 @@ function draw() {
       poles[i][0] -= polespeed;
     }
 
-    // Remove offscreen poles
     if (poles.length > 0 && poles[0][0] + polewidth < 0) {
       poles.shift();
     }
 
-    // Add new poles
     if (poles[poles.length - 1][0] < width - poledistance) {
       poles.push([width, randomPoleY()]);
     }
 
   } else {
-    // Update high score if needed
     if (firstRound) {
       fetchHighScore();
       firstRound = false;
-      console.log("Fetching high score");
-    }
-    highScore = getHighScore();
-    // console.log("High Score: " + highScore);
-    // console.log("Current Score: " + score);
-    if (score > highScore) {
-      highScore = score;
-      setHighScore(highScore);
-      updateHighScore(highScore);
     }
 
-    // Game over screen
+    highScore = getHighScore();
+
     textAlign(CENTER, CENTER);
     textSize(32);
     fill(255);
@@ -123,11 +101,10 @@ function draw() {
     text("Press any key to restart", width / 2, height / 2 + 60);
   }
 
-  // Draw score
   textAlign(CENTER, TOP);
-  textSize(48); // Big score
+  textSize(48);
   fill(255);
-  text(score, width / 2, 10); // Display score at the top center
+  text(score, width / 2, 10);
 }
 
 function keyPressed() {
@@ -152,6 +129,7 @@ function resetGame() {
   score = 0;
   poles = [];
   gameOver = false;
+  firstRound = true;
 
   let x = 300;
   while (x < width + polewidth) {
@@ -162,4 +140,16 @@ function resetGame() {
 
 function randomPoleY() {
   return random(poleGap / 2 + 10, height - poleGap / 2 - 30);
+}
+
+function handleGameOver() {
+  if (!gameOver) {
+    gameOver = true;
+
+    if (score > highScore) {
+      highScore = score;
+      setHighScore(highScore);
+      updateHighScore(highScore);
+    }
+  }
 }
