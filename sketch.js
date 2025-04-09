@@ -19,7 +19,7 @@ let poles = [];
 let gameOver = false;
 
 function setup() {
-  width = windowWidth-20;
+  width = windowWidth < 500 ? windowWidth - 20 :  500 - 20;
   let cnv = createCanvas(width, height);
   cnv.mousePressed(flap);
   // Append the canvas directly to the body or a container div
