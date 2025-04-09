@@ -231,7 +231,7 @@ window.setHighScore = setHighScore;
 window.fetchHighScore = fetchHighScore;
 
 // user.js (Module)
-export function updateHighScore(newScore) { 
+function updateHighScore(newScore) { 
     const username = localStorage.getItem('username');
     if (username) {
         const userRef = ref(database, 'users/' + username);
