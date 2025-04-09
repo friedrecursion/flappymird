@@ -1,15 +1,16 @@
-const gravity = 0.26;
+const gravity = 0.22;
 const polespeed = 1.36;
 let birdsize = 24;
-let birdheight = 380;
+const birdstartHeight = 300; // Starting height of the bird
+let birdheight = birdstartHeight; // Current height of the bird
 let birdspeed = 0;
 let score = 0;
 let highScore = 0; // Initialize high score
 let firstRound = true; // Flag to check if it's the first round
 
 const polewidth = 25;
-const poleGap = birdsize * 4.3;
-const poledistance = 120;
+const poleGap = birdsize * 4.35;
+const poledistance = 140;
 const poleoverhang = 5; // Overhang for the poles
 
 let width = 600;
@@ -146,7 +147,7 @@ function flap() {
 }
 
 function resetGame() {
-  birdheight = 200;
+  birdheight = birdstartHeight;
   birdspeed = 0;
   score = 0;
   poles = [];
