@@ -68,14 +68,14 @@ function draw() {
       rect(x - poleoverhang, holeY + poleGap / 2, polewidth + poleoverhang * 2, poleoverhang*3);
 
       // Collision detection (based on birdY)
-      if (
-        birdX + birdsize / 2 > x &&
-        birdX - birdsize / 2 < x + polewidth &&
-        (birdY - birdsize  < holeY - poleGap / 2 || birdY + birdsize / 2  > holeY + poleGap / 2)
-      ) {
-        gameOver = true;
-        firstRound = true; // Set to false to avoid fetching high score again
-      }
+      // if (
+      //   birdX + birdsize / 2 > x &&
+      //   birdX - birdsize / 2 < x + polewidth &&
+      //   (birdY - birdsize  < holeY - poleGap / 2 || birdY + birdsize / 2  > holeY + poleGap / 2)
+      // ) {
+      //   gameOver = true;
+      //   firstRound = true; // Set to false to avoid fetching high score again
+      // }
 
       // Scoring
       if (!poles[i].passed && x + polewidth < birdX - birdsize / 2) {
