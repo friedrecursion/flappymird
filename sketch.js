@@ -8,7 +8,7 @@ let highScore = 0; // Initialize high score
 let firstRound = true; // Flag to check if it's the first round
 
 const polewidth = 25;
-const poleGap = birdsize * 4;
+const poleGap = birdsize * 4.2;
 const poledistance = 120;
 const poleoverhang = 5; // Overhang for the poles
 
@@ -66,13 +66,14 @@ function draw() {
       rect(x - poleoverhang, holeY + poleGap / 2, polewidth + poleoverhang * 2, poleoverhang*3);
 
       // Collision detection (based on birdY)
-      // if (
-      //   birdX + birdsize / 2 > x &&
-      //   birdX - birdsize / 2 < x + polewidth &&
-      //   (birdY - birdsize  < holeY - poleGap / 2 || birdY + birdsize / 2  > holeY + poleGap / 2)
-      // ) {
-      //   gameOver = true;
-      // }
+      if (
+        birdX + birdsize / 2 > x &&
+        birdX - birdsize / 2 < x + polewidth &&
+        (birdY - birdsize  < holeY - poleGap / 2 || birdY + birdsize / 2  > holeY + poleGap / 2)
+      ) {
+        gameOver = true;
+        firstRound = true; // Set to false to avoid fetching high score again
+      }
 
       // Scoring
       if (!poles[i].passed && x + polewidth < birdX - birdsize / 2) {
