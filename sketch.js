@@ -117,7 +117,7 @@ function keyPressed() {
 
 function flap() {
   if (!gameOver) {
-    birdspeed = -gravity * 26;
+    birdspeed = -gravity * ( width < 480  ? 20 : 26);
   } else if (gameOver) {
     resetGame();
   }
