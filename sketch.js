@@ -9,7 +9,7 @@ let highScore = 0;
 let firstRound = true;
 
 const polewidth = 25;
-const poleGap = birdsize * 4.6;
+let poleGap = birdsize * 4.6;
 const poledistance = 140;
 const poleoverhang = 5;
 
@@ -21,6 +21,7 @@ let gameOver = false;
 
 function setup() {
   width = windowWidth < 500 ? windowWidth - 20 : 500 - 20;
+  poleGap = width < 480 ? birdsize * 4.6 : birdsize * 4.2;
   let cnv = createCanvas(width, height);
   cnv.mousePressed(flap);
   document.body.insertBefore(cnv.elt, document.getElementById('user-container'));
