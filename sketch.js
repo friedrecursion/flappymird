@@ -8,7 +8,7 @@ let highScore = 0; // Initialize high score
 let firstRound = true; // Flag to check if it's the first round
 
 const polewidth = 25;
-const poleGap = birdsize * 4.2;
+const poleGap = birdsize * 4.3;
 const poledistance = 120;
 const poleoverhang = 5; // Overhang for the poles
 
